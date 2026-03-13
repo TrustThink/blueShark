@@ -70,6 +70,7 @@ This library was developed and is maintained by:
 - Camila Soto Aceves
 - Anabelle Rojas Morgan
 - Lily Goncalves
+- Isabella Lemus
 
 TrustThink, LLC
 

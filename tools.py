@@ -15,7 +15,7 @@ def extractknownprotocols(filepath):
         if protocol not in protocol_list: 
             protocol_list.append(protocol)
     return protocol_list
-
+#endpoint function
 def list_endpoints(filepath):
     capture = read_capture_file(filepath)
     endpoints = set()

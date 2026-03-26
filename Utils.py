@@ -1,9 +1,12 @@
 import pyshark
 import collections
+import asyncio
 def read_capture_file(filepath):
+    loop = asyncio.ProactorEventLoop()
+    asyncio.set_event_loop(loop)
     capture = pyshark.FileCapture(
         filepath,
-        keep_packets = False
+        eventloop=loop
     )
     return capture
 
@@ -35,4 +38,4 @@ def identifytoptalkers(filepath):
         if ip_dictionary[key][0] > greatest_frequency:
             greatest_frequency_address = ip_dictionary[key]
     return greatest_frequency_address
-print(list_endpoints("wiresharkfile.pcap"))
+print(extractknownprotocols("wiresharkfile.pcap"))

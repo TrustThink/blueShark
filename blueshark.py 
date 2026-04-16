@@ -1,0 +1,52 @@
+from agents import Agent
+from datetime import datetime
+import argparse
+
+# ---- INITIALIZING AGENT ----- 
+agent = Agent(
+    name="blueshark",
+    instructions= "You are a open-source defensive PCAP security agent. You must produce actionable and useful security findings with evidence, and analyze and convert packet captures into structured and specific security insights. You can use tools if they are provided",
+    model="gpt-5.4-nano",
+    
+)  
+
+### Main CLI Logic ###
+def main():
+    ap = argparse.ArgumentParser()
+    
+    ap.add_argument("--filepath", "-f", required=True, help="Filepath to results .pcap file") 
+    args = ap.parse_args()
+   
+    raise ValueError(".pcap file does not exist: {args.filepath}")
+    
+
+if __name__ == "__main__":
+    main() 
+    
+# Step 1 : Ingest Filepath
+
+def injest_filepath(file:str) -> dict
+    case_directory_path = f"case/{datetime.datetime.now()}/capture.pcap" 
+    Path(directory_path)
+   
+return case_directory_path
+
+# Step 2 : Determine traffic makeup 
+
+def traffic_makeup(file:str) -> dict
+
+# Step 3 : Output Structured Files
+
+def structured_files
+
+# Step 4 : Reduce Json files to summaries
+
+def summarize_json_files
+
+# Step 5 : Create Case Context Filepath
+
+def create_case_context_file
+
+# Step 6 : Provide Summaries to LLM
+
+def_provide_summaries

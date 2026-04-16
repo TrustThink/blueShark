@@ -1,6 +1,9 @@
 import pyshark
 import collections
 import asyncio
+import sys
+
+
 def read_capture_file(filepath):
     loop = asyncio.ProactorEventLoop()
     asyncio.set_event_loop(loop)
@@ -9,7 +12,7 @@ def read_capture_file(filepath):
         eventloop=loop
     )
     return capture
-
+#Extract known protocols works as is
 def extractknownprotocols(filepath): 
     capture = read_capture_file(filepath)
     protocol_list = []
@@ -27,15 +30,16 @@ def list_endpoints(filepath):
             endpoints.add(packet.ip.src)
             endpoints.add(packet.ip.dst)
     return list(endpoints)
+#ERROR
 
-def identifytoptalkers(filepath): 
+def identifytoptalkers(filepath, top_n=5): 
     capture = read_capture_file(filepath)
-    for packet in capture: 
-        ip_dictionary = collections.Counter(packet.ip.src)
-        greatest_frequency = ip_dictionary[0][0]
-        greatest_frequency_address = ip_dictionary[0]
-    for key in range(ip_dictionary.length): 
-        if ip_dictionary[key][0] > greatest_frequency:
-            greatest_frequency_address = ip_dictionary[key]
-    return greatest_frequency_address
-print(extractknownprotocols("wiresharkfile.pcap"))
+    counter = collections.Counter()
+    for packet in capture:
+        try:
+            counter[packet.ip.src] += 1
+        except AttributeError:
+            continue
+    return counter.most_common(top_n)
+
+print(list_endpoints("wiresharkfile.pcap"))

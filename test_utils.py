@@ -46,4 +46,4 @@ class TestExtractKnownProtocols(unittest.TestCase):
         result = extractknownprotocols("fake.pcap")
 
         # Assert
-        self.assertEqual(result, ["UDP", "TCP", "HTTP"])
+        self.assertEqual(result, ["UDP", "TCP", "HTTP"]) 

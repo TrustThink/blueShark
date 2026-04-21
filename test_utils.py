@@ -1,26 +1,21 @@
-#import pyshark
-import collections
-import asyncio
-#import mock
-import unittest
-
-class read_capture_file(filepath):
-
-    @read_capture_file.patch('capture')
-    def read_capture_file_test(self, capture_mocked):
-        args, kwargs = capture_mocked.call_args
-        args = capture_mocked.call_args.args  # alternatively 
-        self.assertEqual(args, ['metadata_example', 'action_example'])
-
-
-
 import unittest
 from unittest import mock
+from Utils import read_capture_file, extract_known_protocols
+
+class TestReadCaptureFile(unittest.TestCase):
+
+    @mock.patch("Utils.pyshark.FileCapture")
+    @mock.patch("Utils.asyncio.set_event_loop")
+    @mock.patch("Utils.asyncio.new_event_loop")
+    def test_read_capture_file(self, mock_new_event_loop, mock_set_event_loop, mock_file_capture):
+
+        pass
+
 
 class TestExtractKnownProtocols(unittest.TestCase):
-
+    @mock.patch('Utils.read_capture_file')
     def test_no_duplicates_in_protocols(self, mock_read_capture):
-
+        
         # Create fake packets
         packet1 = mock.Mock()
         packet1.highest_layer = "UDP"
@@ -37,13 +32,17 @@ class TestExtractKnownProtocols(unittest.TestCase):
         packet5 = mock.Mock()
         packet5.highest_layer = "TCP"  # duplicate
 
-        # Mock capture (acts like iterable)
-        mock_read_capture.return_value = [
-            packet1, packet2, packet3, packet4, packet5
-        ]
+        # fake capture object
+        mock_capture = mock.MagicMock()
+        mock_capture.__iter__.return_value = iter([packet1, packet2, packet3, packet4, packet5])
+
+
+        # read_capture_file() returns fake capture
+        mock_read_capture.return_value = mock_capture
 
         # Act
-        result = extractknownprotocols("fake.pcap")
+        result = extract_known_protocols("fake.pcap")
 
         # Assert
-        self.assertEqual(result, ["UDP", "TCP", "HTTP"])  
+        self.assertEqual(set(result["protocols"]), {"UDP", "TCP", "HTTP"}) 
+        self.assertEqual(result["count"], 3) 
